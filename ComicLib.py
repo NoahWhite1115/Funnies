@@ -166,6 +166,14 @@ class comic_obj():
                 if img[0] == 'title':
                     self.title_text = img[1]
 
+        #get additional image
+        if self.add_image == True:
+            add_image = self.parser.image_list[self.ai_image_loc]
+            for img in add_image:
+                if img[0] == 'src':
+                    add_image_url = img[1]
+
+            urllib.urlretrieve("https:" + add_image_url, "./Comics/" + self.name + "_ai.png")
 
     #load the next comic
     def next(self):
