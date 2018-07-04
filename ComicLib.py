@@ -86,7 +86,7 @@ class comic_obj():
         if "rand" in self.flags:
             try:
                 rand_index = self.flags.index("rand") + 1
-                self.rand_link_loc = int(self.flags[rand_index])
+                self.rand_loc = int(self.flags[rand_index])
                 self.rand_link = True
             except:
                 print "WARNING: Invalid index provided for random link. Random link will be disabled for " + self.name
@@ -188,7 +188,6 @@ class comic_obj():
                 else:
                     self.url = link[1]
 
-        #make special cases for those like xkcd
         self.page = urllib.urlopen(self.url).read()
         self.parser.clear()
         self.parser.feed(self.page)
@@ -207,11 +206,26 @@ class comic_obj():
                 else:
                     self.url = link[1]
 
-        #make special cases for those like xkcd
         self.page = urllib.urlopen(self.url).read()
         self.parser.clear()
         self.parser.feed(self.page)
 
+    #loads a random comic, if enabled
+    def random(self):
+        if not self.rand_link:
+            print "Warning: random not enabled on " + self.name
+            return
+
+        for link in self.parser.link_list[self.rand_loc]:
+            if link[0] == 'href':
+                if self.lcl == True:
+                    self.url = "https:" + link[1]
+                else:
+                    self.url = link[1]
+
+        self.page = urllib.urlopen(self.url).read()
+        self.parser.clear()
+        self.parser.feed(self.page)
 
 #Before running test, save your current version of ./.funconfig as something else and replace it with the following line:
 #xkcd,http://xkcd.com,1-7-9,tt-lcl
@@ -230,7 +244,7 @@ def comicTest():
         print "Info arg not properly set."
         exit()
 
-    if xkcdArgs[3] != 'tt-lcl':
+    if xkcdArgs[3] != 'tt-lcl-rand-8':
         print "Flags arg not properly set."
 
     xkcd = comic_obj(xkcdArgs[0],xkcdArgs[1],xkcdArgs[2],xkcdArgs[3])
@@ -238,5 +252,8 @@ def comicTest():
 
     xkcd.prev()
     xkcd.read()
+    xkcd.random()
+    xkcd.read()
+    print xkcd.title_text
 
 comicTest()

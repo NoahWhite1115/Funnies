@@ -40,6 +40,9 @@ def ParserTest():
 
     parser.feed(xkcd)
 
+    for i in parser.link_list:
+        print i
+
     xkcd = parser.image_list [1][0][1]
     tt = parser.image_list[1][1][1]
     link_p = parser.link_list[7][1][1]
@@ -74,3 +77,4 @@ def ParserTest():
         exit()
 
     return True 
+
