@@ -94,7 +94,7 @@ class comic_obj():
         else:
             self.rand_link = False
 
-        #If url provided in script isn't garunteed to be the max url, then a link to the 
+        #If url provided in script isn't guarunteed to be the max url, then a link to the max comic must be provided.
         if "nm" in self.flags:
             try:
                 nm_index = self.flags.index("nm") + 1
@@ -177,10 +177,12 @@ class comic_obj():
 
     #load the next comic
     def next(self):
+        #check if valid
         if self.url == self.max_index:
             print self.name + " is already at max index."
             return
 
+        #Check if link is global or local; adjust accordingly
         for link in self.parser.link_list[self.next_loc]:
             if link[0] == 'href':
                 if self.lcl == True:
@@ -188,6 +190,7 @@ class comic_obj():
                 else:
                     self.url = link[1]
 
+        #get the page
         self.page = urllib.urlopen(self.url).read()
         self.parser.clear()
         self.parser.feed(self.page)
@@ -195,10 +198,12 @@ class comic_obj():
 
     #load the previous comic
     def prev(self):
+        #check if valid
         if self.url == self.min_index:
             print self.name + " is already at min index."
             return
 
+        #Check if link is global or local; adjust accordingly
         for link in self.parser.link_list[self.prev_loc]:
             if link[0] == 'href':
                 if self.lcl == True:
@@ -206,16 +211,19 @@ class comic_obj():
                 else:
                     self.url = link[1]
 
+        #get the page
         self.page = urllib.urlopen(self.url).read()
         self.parser.clear()
         self.parser.feed(self.page)
 
     #loads a random comic, if enabled
     def random(self):
+        #check if valid
         if not self.rand_link:
             print "Warning: random not enabled on " + self.name
             return
 
+        #Check if link is global or local; adjust accordingly
         for link in self.parser.link_list[self.rand_loc]:
             if link[0] == 'href':
                 if self.lcl == True:
@@ -223,6 +231,7 @@ class comic_obj():
                 else:
                     self.url = link[1]
 
+        #get the page
         self.page = urllib.urlopen(self.url).read()
         self.parser.clear()
         self.parser.feed(self.page)
