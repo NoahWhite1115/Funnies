@@ -113,6 +113,12 @@ class comic_obj():
         else:
             self.lcl = False
 
+        #check if the comic name should be extracted
+        if "name" in self.flags:
+            self.named = True
+            
+        else:
+            self.named = False
 
     #check comic url, get max and min indices
     def load(self):
