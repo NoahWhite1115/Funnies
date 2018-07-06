@@ -99,8 +99,21 @@ class FunniesGUI(Frame):
             prev_button.configure(width = 5, activebackground = "#33B5E5", relief = FLAT)
             self.canvas.create_window(center - prev_spacing, height + 5, anchor=N, window=prev_button)
 
-            height += 40
+            """
+            #last button
+            if comic.last == True:
+                last_button = Button(self.parent, text = "Last", command = self.quit)
+                last_button.configure(width = 5, activebackground = "#33B5E5", relief = FLAT)
+                self.canvas.create_window(center + next_spacing + 40, height + 5, anchor=N, window=last_button)
+ 
+            #first button
+            if comic.first == True:
+                prev_button = Button(self.parent, text = "First", command = self.quit)
+                prev_button.configure(width = 5, activebackground = "#33B5E5", relief = FLAT)
+                self.canvas.create_window(center - prev_spacing - 40, height + 5, anchor=N, window=prev_button)
+            """
 
+            height += 40
 
 def main():
     #read/split config file as a list of 3-tuples (Name,URL,info_string).
