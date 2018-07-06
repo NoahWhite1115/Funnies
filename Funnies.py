@@ -108,9 +108,9 @@ class FunniesGUI(Frame):
  
             #first button
             if comic.first == True:
-                prev_button = Button(self.parent, text = "First", command = self.quit)
-                prev_button.configure(width = 5, activebackground = "#33B5E5", relief = FLAT)
-                self.canvas.create_window(center - prev_spacing - 40, height + 5, anchor=N, window=prev_button)
+                first_button = Button(self.parent, text = "First", command = self.quit)
+                first_button.configure(width = 5, activebackground = "#33B5E5", relief = FLAT)
+                self.canvas.create_window(center - prev_spacing - 40, height + 5, anchor=N, window=first_button)
             """
 
             height += 40
