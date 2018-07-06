@@ -271,4 +271,3 @@ def comicTest():
     xkcd.read()
     print xkcd.title_text
 
-comicTest()
