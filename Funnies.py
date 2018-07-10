@@ -1,8 +1,9 @@
-#Funnies 0.01
+#Funnies 0.10
 #Written by Noah White
 from Tkinter import *
 import ComicLib
 from PIL import Image,ImageTk
+
 
 class FunniesGUI(Frame):
     def __init__(self, master,comic_list):
@@ -12,6 +13,7 @@ class FunniesGUI(Frame):
         self.comic_guis = []
 
         self.widgets()
+        self.set_up()
 
     #Set up the main interface
     def widgets(self):
@@ -46,7 +48,6 @@ class FunniesGUI(Frame):
         self.parent.bind("<Button-4>", self.mousewheel)
         self.parent.bind("<Button-5>", self.mousewheel)
 
-        self.set_up()
 
     #handles scrolling
     def mousewheel(self, event):
@@ -55,121 +56,131 @@ class FunniesGUI(Frame):
         elif event.num == 4 or event.delta == 120:
             self.canvas.yview_scroll(-1,"units")
 
-    #set up the page
+    #set up the comic_guis
     def set_up(self):
-        height = 0
-        center = self.parent.winfo_screenwidth() / 2
 
+        #generate comic objects
+        index = 0
         for comic in self.comics:
-            new_gui = ComicGui(comic,self.canvas,height,center,self.parent,self)
-            height = new_gui.new_height
+            new_gui = ComicGui(comic,self.canvas,self.parent,self,index)
             self.comic_guis.append(new_gui)
+            index += 1
 
-        self.canvas.config(scrollregion=(0,0,center*2,height+35))
+        #refresh from 0 to load whole page
+        self.refresh(0)
 
-    def refresh(self):
+    #redraw all the page elements
+    def refresh(self, index):
         height = 0
         center = self.parent.winfo_screenwidth() / 2
 
         for comic_gui in self.comic_guis:
-            comic_gui.refresh(height,center)
+            comic_gui.clear_gui()
+            comic_gui.draw_gui(height,center)
             height = comic_gui.new_height
 
         self.canvas.config(scrollregion=(0,0,center*2,height+35))
 
 class ComicGui():
-    def __init__(self,comic,canvas,height,center,parent,funnies):
+    def __init__(self,comic,canvas,parent,funnies,index):
         self.parent = parent
         self.comic = comic
-        self.canvas = canvas
+        self.parent_canvas = canvas
         self.funnies = funnies
+        self.index = index
 
-        #space for comic name
-        canvas.create_text(center,height,text = comic.name, anchor = N)
-        height += 15
+        self.name_text = None
+        self.drawn_image = None
+        self.title_text = None
 
         #load comic
         self.comic_image = Image.open("./Comics/" + self.comic.name + ".png")
         (comic_width,comic_height) = self.comic_image.size
         self.comic_image_obj = ImageTk.PhotoImage(self.comic_image)
-        #Draw comic
-        canvas.create_image(center, height, image = self.comic_image_obj, anchor=N)
-        height += comic_height
 
-        #buttons
-        #spacing on buttons
-        next_spacing = 40
-        prev_spacing = 40
-    
+        #initialize buttons
         #random button
         if comic.rand_link == True:
-            self.rand_button = Button(self.parent, text = "Rand", command = (lambda: self.comic.random()))
+            self.rand_button = Button(self.parent, text = "Rand", command = (lambda: self.random()))
             self.rand_button.configure(width = 5, activebackground = "#33B5E5", relief = FLAT)
-            self.rand_obj = canvas.create_window(center, height + 5, anchor=N, window=self.rand_button)
+            self.rand_obj = self.parent_canvas.create_window(0, 0, anchor=N, window=self.rand_button)
             
-            #adjust spacing if random button exists
-            next_spacing = 80
-            prev_spacing = 80
-
         #next button
         self.next_button = Button(self.parent, text = "Next", command = (lambda : self.next()))
         self.next_button.configure(width = 5, activebackground = "#33B5E5", relief = FLAT)
-        self.next_obj = canvas.create_window(center + next_spacing, height + 5, anchor=N, window=self.next_button)
+        self.next_obj = self.parent_canvas.create_window(0, 0, anchor=N, window=self.next_button)
 
         #previous button
         self.prev_button = Button(self.parent, text = "Prev", command = (lambda : self.prev()))
         self.prev_button.configure(width = 5, activebackground = "#33B5E5", relief = FLAT)
-        self.prev_obj = canvas.create_window(center - prev_spacing, height + 5, anchor=N, window=self.prev_button)
+        self.prev_obj = self.parent_canvas.create_window(0, 0, anchor=N, window=self.prev_button)
 
-        height += 45
-        self.new_height = height
+    #clear the gui
+    def clear_gui(self):
+        self.parent_canvas.delete(self.name_text)
+        self.parent_canvas.delete(self.drawn_image)
 
-    def refresh(self,height,center):
+    #draw the gui
+    def draw_gui(self,height,center):
+        
         #space for comic name
-        height += 15
+        self.name_text = self.parent_canvas.create_text(center,height,text = self.comic.name, font=title_font, anchor = N)
+        height += int(title_font[1] * 1.5)
 
-        #load comic
-        self.canvas.create_image(center, height, image = self.comic_image_obj, anchor=N)
-        #get comic size
+        #draw the new comic
+        self.drawn_image = self.parent_canvas.create_image(center, height, image = self.comic_image_obj, anchor=N)
+
+        #get comic size and adjust for height
         (comic_width,comic_height) = self.comic_image.size
-
         height += comic_height
 
-        next_spacing = 80
-        prev_spacing = 80
+        next_spacing = 40
+        prev_spacing = 40
 
         #move buttons
         if self.comic.rand_link == True:
-            self.canvas.coords(self.rand_obj,(center,height+5))
+            self.parent_canvas.coords(self.rand_obj,(center,height+5))
             next_spacing = 80
             prev_spacing = 80
 
-        self.canvas.coords(self.prev_obj,(center - prev_spacing,height+5))
-
-        self.canvas.coords(self.next_obj,(center + next_spacing ,height+5))
+        self.parent_canvas.coords(self.prev_obj,(center - prev_spacing,height+5))
+        self.parent_canvas.coords(self.next_obj,(center + next_spacing ,height+5))
 
         height += 45
         self.new_height = height
 
+    #The prev function for the ComicGUI class
+    #get the prev comic and load it into memory from the file
     def prev(self):
         self.comic.prev()
         self.comic.read()
         self.comic_image = Image.open("./Comics/" + self.comic.name + ".png")
-        (comic_width,comic_height) = self.comic_image.size
         self.comic_image_obj = ImageTk.PhotoImage(self.comic_image)
-        self.funnies.refresh()
+        #refresh the page so that the changes are loaded.
+        self.funnies.refresh(self.index)
 
-
+    #The next function for the ComicGUI class
+    #get the next comic and load it into memory from the file
     def next(self):
         self.comic.next()
         self.comic.read()
         self.comic_image = Image.open("./Comics/" + self.comic.name + ".png")
-        (comic_width,comic_height) = self.comic_image.size
         self.comic_image_obj = ImageTk.PhotoImage(self.comic_image)
-        self.funnies.refresh()
+        #refresh the page so that the changes are loaded.
+        self.funnies.refresh(self.index)
 
+    #The next function for the ComicGUI class
+    #get the next comic and load it into memory from the file
+    def random(self):
+        self.comic.random()
+        self.comic.read()
+        self.comic_image = Image.open("./Comics/" + self.comic.name + ".png")
+        self.comic_image_obj = ImageTk.PhotoImage(self.comic_image)
+        #refresh the page so that the changes are loaded.
+        self.funnies.refresh(self.index)
 
 def main():
+
     #read/split config file as a list of 3-tuples (Name,URL,info_string).
     config_list = ComicLib.readConfig()
 
@@ -190,4 +201,5 @@ def main():
     top.mainloop()
 
 if __name__ == '__main__':
+    title_font = ("Verdana",22)
     main()
