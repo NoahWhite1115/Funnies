@@ -119,13 +119,14 @@ class ComicGui():
     def clear_gui(self):
         self.parent_canvas.delete(self.name_text)
         self.parent_canvas.delete(self.drawn_image)
+        self.parent_canvas.delete(self.title_text)
 
     #draw the gui
     def draw_gui(self,height,center):
         
         #space for comic name
-        self.name_text = self.parent_canvas.create_text(center,height,text = self.comic.name, font=title_font, anchor = N)
-        height += int(title_font[1] * 1.5)
+        self.name_text = self.parent_canvas.create_text(center,height,text = self.comic.name, font=name_font, anchor = N)
+        height += int(name_font[1] * 1.5)
 
         #draw the new comic
         self.drawn_image = self.parent_canvas.create_image(center, height, image = self.comic_image_obj, anchor=N)
@@ -134,6 +135,15 @@ class ComicGui():
         (comic_width,comic_height) = self.comic_image.size
         height += comic_height
 
+        
+        #space for comic name
+        self.title_text = self.parent_canvas.create_text(center, height, text = self.comic.title_text, font=title_font, anchor = N, width = center * 1.8, justify = CENTER)
+        width_by_char = int(center*1.8/(title_font[1]/1.5))
+        lines = int(len(self.comic.title_text) / width_by_char)
+        if int(len(self.comic.title_text) % width_by_char) > 0:
+            lines += 1
+        height += lines * int(title_font[1] * 1.5)
+        
         next_spacing = 40
         prev_spacing = 40
 
@@ -201,5 +211,6 @@ def main():
     top.mainloop()
 
 if __name__ == '__main__':
-    title_font = ("Verdana",22)
+    name_font = ("Verdana",22)
+    title_font = ("Verdana",10)
     main()

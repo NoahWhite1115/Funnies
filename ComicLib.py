@@ -163,8 +163,10 @@ class comic_obj():
                 image_url = img[1]
 
         #get url
-        #Needs to be more general
-        urllib.urlretrieve("https:" + image_url, "./Comics/" + self.name + ".png")
+        if self.lcl == True:            
+            urllib.urlretrieve("https:" + image_url, "./Comics/" + self.name + ".png")
+        else:
+            urllib.urlretrieve(image_url, "./Comics/" + self.name + ".png")
 
         #get title text
         if self.title == True:
@@ -243,7 +245,7 @@ class comic_obj():
         self.parser.feed(self.page)
 
 #Before running test, save your current version of ./.funconfig as something else and replace it with the following line:
-#xkcd,http://xkcd.com,1-7-9,tt-lcl
+#xkcd,http://xkcd.com,1-7-9,tt-lcl-rand-8
 def comicTest():
     xkcdArgs = readConfig()[0]
 
