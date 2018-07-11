@@ -20,7 +20,7 @@ def readConfig():
 
     #convert to 3-tuple
     config_file = config_file.readlines()
-    
+
     comic_info = []
     
     for line in config_file:
