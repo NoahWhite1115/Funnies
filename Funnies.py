@@ -92,6 +92,7 @@ class ComicGui():
         self.name_text = None
         self.drawn_image = None
         self.title_text = None
+        self.drawn_add_image = None
 
         #load comic
         self.comic_image = Image.open("./Comics/" + self.comic.name + ".png")
@@ -101,17 +102,17 @@ class ComicGui():
         #initialize buttons
         #random button
         if comic.rand_link == True:
-            self.rand_button = Button(self.parent, text = "Rand", command = (lambda: self.random()))
+            self.rand_button = Button(self.parent, text = "Rand", command = (lambda: self.load("rand")))
             self.rand_button.configure(width = 5, activebackground = "#33B5E5", relief = FLAT)
             self.rand_obj = self.parent_canvas.create_window(0, 0, anchor=N, window=self.rand_button)
             
         #next button
-        self.next_button = Button(self.parent, text = "Next", command = (lambda : self.next()))
+        self.next_button = Button(self.parent, text = "Next", command = (lambda : self.load("next")))
         self.next_button.configure(width = 5, activebackground = "#33B5E5", relief = FLAT)
         self.next_obj = self.parent_canvas.create_window(0, 0, anchor=N, window=self.next_button)
 
         #previous button
-        self.prev_button = Button(self.parent, text = "Prev", command = (lambda : self.prev()))
+        self.prev_button = Button(self.parent, text = "Prev", command = (lambda : self.load("prev")))
         self.prev_button.configure(width = 5, activebackground = "#33B5E5", relief = FLAT)
         self.prev_obj = self.parent_canvas.create_window(0, 0, anchor=N, window=self.prev_button)
 
@@ -120,6 +121,7 @@ class ComicGui():
         self.parent_canvas.delete(self.name_text)
         self.parent_canvas.delete(self.drawn_image)
         self.parent_canvas.delete(self.title_text)
+        self.parent_canvas.delete(self.drawn_add_image)
 
     #draw the gui
     def draw_gui(self,height,center):
@@ -135,7 +137,15 @@ class ComicGui():
         (comic_width,comic_height) = self.comic_image.size
         height += comic_height
 
-       
+        #load additional image
+        if self.comic.add_image == True:
+            self.drawn_add_image = self.parent_canvas.create_image(center, height, image = self.add_image_obj, anchor=N)
+
+            #get comic size and adjust for height
+            (comic_width,comic_height) = self.comic_image.size
+            height += comic_height
+
+
         if self.comic.title == True:
         #space for comic name
             self.title_text = self.parent_canvas.create_text(center, height, text = self.comic.title_text, font=title_font, anchor = N, width = center * 1.8, justify = CENTER)
@@ -160,35 +170,27 @@ class ComicGui():
         height += 45
         self.new_height = height
 
-    #The prev function for the ComicGUI class
-    #get the prev comic and load it into memory from the file
-    def prev(self):
-        self.comic.prev()
+    #The load function for the ComicGUI class
+    #get the previous, next or random comic and load it into memory from the file
+    def load(self, arg):
+        if arg == "prev":
+            self.comic.prev()
+        elif arg == "next":
+            self.comic.next()
+        elif arg == "random":
+            self.comic.random()
         self.comic.read()
         self.comic_image = Image.open("./Comics/" + self.comic.name + ".png")
         self.comic_image_obj = ImageTk.PhotoImage(self.comic_image)
+
+        if self.comic.add_image == True:
+            self.add_image = Image.open("./Comics/" + self.comic.name + ".png")
+            self.add_image_obj = ImageTk.PhotoImage(self.comic_image)
+
         #refresh the page so that the changes are loaded.
         self.funnies.refresh(self.index)
 
-    #The next function for the ComicGUI class
-    #get the next comic and load it into memory from the file
-    def next(self):
-        self.comic.next()
-        self.comic.read()
-        self.comic_image = Image.open("./Comics/" + self.comic.name + ".png")
-        self.comic_image_obj = ImageTk.PhotoImage(self.comic_image)
-        #refresh the page so that the changes are loaded.
-        self.funnies.refresh(self.index)
 
-    #The next function for the ComicGUI class
-    #get the next comic and load it into memory from the file
-    def random(self):
-        self.comic.random()
-        self.comic.read()
-        self.comic_image = Image.open("./Comics/" + self.comic.name + ".png")
-        self.comic_image_obj = ImageTk.PhotoImage(self.comic_image)
-        #refresh the page so that the changes are loaded.
-        self.funnies.refresh(self.index)
 
 def main():
 
