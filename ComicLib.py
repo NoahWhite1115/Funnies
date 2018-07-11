@@ -95,13 +95,16 @@ class comic_obj():
             self.rand_link = False
 
         #If url provided in script isn't guarunteed to be the max url, then a link to the max comic must be provided.
-        if "nm" in self.flags:
+        if "nm" in self.flags or "max" in self.flags:
             try:
                 nm_index = self.flags.index("nm") + 1
                 self.max_link_loc = int(self.flags[nm_index])
-                self.max_link_needed = True
+                self.max_link = True
+                if "nm" in self.flags:
+                    self.max_link_needed = True
             except:
                 print "WARNING: No max link provided for " + self.name + " even though it was indicated one was needed. Errors may occur."
+                self.max_link = True
                 self.max_link_needed = False
         else:
             self.max_link_needed = False
@@ -243,6 +246,27 @@ class comic_obj():
         self.page = urllib.urlopen(self.url).read()
         self.parser.clear()
         self.parser.feed(self.page)
+
+    #loads a random comic, if enabled
+    def max(self):
+        #check if valid
+        if not self.max_link:
+            print "Warning: max not enabled on " + self.name
+            return
+
+        #Check if link is global or local; adjust accordingly
+        for link in self.parser.link_list[self.rand_loc]:
+            if link[0] == 'href':
+                if self.lcl == True:
+                    self.url = "https:" + link[1]
+                else:
+                    self.url = link[1]
+
+        #get the page
+        self.page = urllib.urlopen(self.url).read()
+        self.parser.clear()
+        self.parser.feed(self.page)
+
 
 #Before running test, save your current version of ./.funconfig as something else and replace it with the following line:
 #xkcd,http://xkcd.com,1-7-9,tt-lcl-rand-8
