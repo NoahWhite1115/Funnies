@@ -103,11 +103,21 @@ class comic_obj():
                 if "nm" in self.flags:
                     self.max_link_needed = True
             except:
-                print "WARNING: No max link provided for " + self.name + " even though it was indicated one was needed. Errors may occur."
-                self.max_link = True
+                print "WARNING: Invalid max link provided for " + self.name + " even though it was indicated one was needed. Errors may occur."
+                self.max_link = False
                 self.max_link_needed = False
         else:
             self.max_link_needed = False
+
+        #get min link
+        if "min" in self.flags:
+            try:
+                min_index = self.flags.index("min") + 1
+                self.min_link_loc = int(self.flags[nm_index])
+                self.min_link = True
+            except:
+                print "WARNING: Invalid min link provided for " + self.name
+                self.min_link = False
 
         #check for local links
         if "lcl" in self.flags:
@@ -218,14 +228,23 @@ class comic_obj():
 
         self.get_comic(self.rand_loc,"https:")
 
-    #loads a random comic, if enabled
+    #loads max comic, if enabled
     def max(self):
         #check if valid
         if not self.max_link:
             print "Warning: max not enabled on " + self.name
             return
 
-        self.get_comic(self.next_loc,"https:")
+        self.get_comic(self.max_loc,"https:")
+
+    #loads min comic, if enabled
+    def min(self):
+        #check if valid
+        if not self.min_link:
+            print "Warning: min not enabled on " + self.name
+            return
+
+        self.get_comic(self.min_loc,"https:")
 
     #get the comic from the web
     def get_comic(self,loc,lcl_prefix):

@@ -5,6 +5,7 @@ def add_comic():
     
     comic_url = raw_input ("URL of comic to add: ")
     comic_name = raw_input ("Name of comic to add: ")
+    flags = ""
 
     try:
         comic = urllib.urlopen(comic_url).read()
@@ -55,8 +56,23 @@ def add_comic():
         print "Not an integer!"
         exit()
 
-    #get flags
-    flags = ""
+    #get the random button
+    title = raw_input("Does this comic have a random link? Y/N: ")
+    if title.lower() == "y" or title.lower() == "yes":
+        flags += "rand-"
+    elif title.lower() != "n" or title.lower() != "no":
+        print "Did not understand that input. Please type y or n."
+        exit()
+
+    print  "Type the index of the rand button."
+    try:
+        rand_index = raw_input("Rand: ")
+        int(rand_index)
+        flags += (rand_index + "-")
+    except:
+        print "Not an integer!"
+        exit()
+
     #title text
     title = raw_input("Does this image have title text (also known as mouseover text)? Y/N: ")
     if title.lower() == "y" or title.lower() == "yes":
@@ -81,7 +97,7 @@ def add_comic():
         try:
             ai_index = raw_input("Index: ")
             int(ai_index)
-            flags += ai_index
+            flags += (ai_index + "-")
         except:
             print "Not an integer!"
             exit()   
@@ -89,7 +105,6 @@ def add_comic():
     elif title.lower() != "n" or title.lower() != "no":
         print "Did not understand that input. Please type y or n."
         exit()
-
 
 
 

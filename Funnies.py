@@ -193,8 +193,6 @@ class ComicGui():
         #refresh the page so that the changes are loaded.
         self.funnies.refresh(self.index)
 
-
-
 def main():
 
     #read/split config file as a list of 3-tuples (Name,URL,info_string).
