@@ -237,7 +237,6 @@ class comic_obj():
         self.parser.clear()
         self.parser.feed(self.page)
 
-
 #Before running test, save your current version of ./.funconfig as something else and replace it with the following line:
 #xkcd,http://xkcd.com,1-7-9,tt-lcl-rand-8
 def comicTest():
