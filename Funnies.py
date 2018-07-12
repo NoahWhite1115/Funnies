@@ -96,8 +96,12 @@ class ComicGui():
 
         #load comic
         self.comic_image = Image.open("./Comics/" + self.comic.name + ".png")
-        (comic_width,comic_height) = self.comic_image.size
         self.comic_image_obj = ImageTk.PhotoImage(self.comic_image)
+
+        if comic.add_image == True:
+            #load comic
+            self.add_image = Image.open("./Comics/" + self.comic.name + "_ai.png")
+            self.add_image_obj = ImageTk.PhotoImage(self.add_image)
 
         #initialize buttons
         #random button
@@ -141,10 +145,9 @@ class ComicGui():
         if self.comic.add_image == True:
             self.drawn_add_image = self.parent_canvas.create_image(center, height, image = self.add_image_obj, anchor=N)
 
-            #get comic size and adjust for height
-            (comic_width,comic_height) = self.comic_image.size
-            height += comic_height
-
+            #get additional image size and adjust for height
+            (add_width,add_height) = self.add_image.size
+            height += add_height
 
         if self.comic.title == True:
         #space for comic name
@@ -184,8 +187,8 @@ class ComicGui():
         self.comic_image_obj = ImageTk.PhotoImage(self.comic_image)
 
         if self.comic.add_image == True:
-            self.add_image = Image.open("./Comics/" + self.comic.name + ".png")
-            self.add_image_obj = ImageTk.PhotoImage(self.comic_image)
+            self.add_image = Image.open("./Comics/" + self.comic.name + "_ai.png")
+            self.add_image_obj = ImageTk.PhotoImage(self.add_image)
 
         #refresh the page so that the changes are loaded.
         self.funnies.refresh(self.index)

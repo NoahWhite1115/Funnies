@@ -72,7 +72,7 @@ class comic_obj():
 
         #Check if additional image is wanted
         if "ai" in self.flags:
-            try:
+            try:            
                 ai_index = self.flags.index("ai") + 1
                 self.ai_image_loc = int(self.flags[ai_index])
                 self.add_image = True
@@ -115,6 +115,7 @@ class comic_obj():
             self.base_url = self.url
         else:
             self.lcl = False
+            self.base_url = None
 
         #check if the comic name should be extracted
         if "name" in self.flags:
@@ -184,7 +185,11 @@ class comic_obj():
                 if img[0] == 'src':
                     add_image_url = img[1]
 
+        #get url
+        if self.lcl == True:            
             urllib.urlretrieve("https:" + add_image_url, "./Comics/" + self.name + "_ai.png")
+        else:
+            urllib.urlretrieve(add_image_url, "./Comics/" + self.name + "_ai.png")
 
     #load the next comic
     def next(self):
@@ -193,7 +198,7 @@ class comic_obj():
             print self.name + " is already at max index."
             return
 
-        self.get_comic(self.next_loc)
+        self.get_comic(self.next_loc,self.base_url)
 
     #load the previous comic
     def prev(self):
@@ -202,7 +207,7 @@ class comic_obj():
             print self.name + " is already at min index."
             return
 
-        self.get_comic(self.prev_loc)
+        self.get_comic(self.prev_loc,self.base_url)
 
     #loads a random comic, if enabled
     def random(self):
@@ -211,7 +216,7 @@ class comic_obj():
             print "Warning: random not enabled on " + self.name
             return
 
-        self.get_comic(self.rand_loc)
+        self.get_comic(self.rand_loc,"https:")
 
     #loads a random comic, if enabled
     def max(self):
@@ -220,15 +225,17 @@ class comic_obj():
             print "Warning: max not enabled on " + self.name
             return
 
-        self.get_comic(self.next_loc)
+        self.get_comic(self.next_loc,"https:")
 
     #get the comic from the web
-    def get_comic(self,loc):
+    def get_comic(self,loc,lcl_prefix):
         #Check if link is global or local; adjust accordingly
         for link in self.parser.link_list[loc]:
             if link[0] == 'href':
                 if self.lcl == True:
-                    self.url = self.base_url + link[1]
+
+                    self.url = lcl_prefix + link[1]
+
                 else:
                     self.url = link[1]
 
