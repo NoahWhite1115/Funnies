@@ -17,6 +17,7 @@ def add_comic():
 
     parser.feed(comic)
 
+    #set up main comic
     print "Here are a list of images on the page. Please type the number of the one that looks like the main comic."
 
     index = 0
@@ -32,6 +33,7 @@ def add_comic():
         print "Not an integer!"
         exit()
 
+    #next and prev links
     print "Here are a list of links on the page. Please type the number of the one that looks like the next button."
 
     index = 0
@@ -57,33 +59,82 @@ def add_comic():
         exit()
 
     #get the random button
-    title = raw_input("Does this comic have a random link? Y/N: ")
-    if title.lower() == "y" or title.lower() == "yes":
+    user_input = raw_input("Does this comic have a random link? Y/N: ").lower()
+    if user_input == "y" or user_input == "yes":
         flags += "rand-"
-    elif title.lower() != "n" or title.lower() != "no":
+ 
+        print  "Type the index of the rand button."
+        try:
+            rand_index = raw_input("Rand: ")
+            int(rand_index)
+            flags += (rand_index + "-")
+        except:
+            print "Not an integer!"
+            exit()
+
+    elif user_input != "n" and user_input != "no":
         print "Did not understand that input. Please type y or n."
         exit()
 
-    print  "Type the index of the rand button."
-    try:
-        rand_index = raw_input("Rand: ")
-        int(rand_index)
-        flags += (rand_index + "-")
-    except:
-        print "Not an integer!"
+    #get the max button
+    user_input = raw_input("Does this comic have a max/newest link? Y/N: ").lower()
+    if user_input == "y" or user_input == "yes":
+
+        user_input = raw_input("Does the link provided link to the max comic? Y/N: ").lower()
+        if user_input == "y" or user_input == "yes":
+            flags += "max-"
+        elif user_input == "n" or user_input == "no":
+            flags += "nm-"
+        else:
+            print "Did not understand that input. Please type y or n."
+            exit()
+
+        print "Type the index of the max button."
+        try:
+            max_index = raw_input("Max: ")
+            int(max_index)
+            flags += (rand_index + "-")
+        except:
+            print "Not an integer!"
+            exit()
+
+    #get the min button
+    user_input = raw_input("Does this comic have a min/first link? Y/N: ").lower()
+    if user_input == "y" or user_input == "yes":
+        flags += "min-"
+ 
+        print  "Type the index of the min button."
+        try:
+            min_index = raw_input("Min: ")
+            int(min_index)
+            flags += (min_index + "-")
+        except:
+            print "Not an integer!"
+            exit()
+
+    elif user_input != "n" or user_input != "no":
+        print "Did not understand that input. Please type y or n."
+        exit()
+
+    #local links
+    user_input = raw_input("Are the links and images on this page local links; i.e. links are just /1 rather than comic.com/1? Y/N: ").lower()
+    if user_input == "y" or user_input == "yes":
+        flags += "lcl-"
+    elif user_input != "n" and user_input != "no":
+        print "Did not understand that input. Please type y or n."
         exit()
 
     #title text
-    title = raw_input("Does this image have title text (also known as mouseover text)? Y/N: ")
-    if title.lower() == "y" or title.lower() == "yes":
+    user_input = raw_input("Does this image have title text (also known as mouseover text)? Y/N: ").lower()
+    if user_input == "y" or user_input == "yes":
         flags += "tt-"
-    elif title.lower() != "n" or title.lower() != "no":
+    elif user_input != "n" and user_input != "no":
         print "Did not understand that input. Please type y or n."
         exit()
 
     #additional image
-    ai = raw_input("Does this comic have an additional image? Y/N: ")
-    if title.lower() == "y" or title.lower() == "yes":
+    user_input = raw_input("Does this comic have an additional image? Y/N: ").lower()
+    if user_input == "y" or user_input == "yes":
         flags += "ai-"
 
         print "Here are a list of images on the page. Please type the number of the one that looks like the additional comic."
@@ -102,11 +153,9 @@ def add_comic():
             print "Not an integer!"
             exit()   
 
-    elif title.lower() != "n" or title.lower() != "no":
+    elif user_input != "n" and user_input != "no":
         print "Did not understand that input. Please type y or n."
         exit()
-
-
 
     config_file = open("./.funconfig",'a')
     config_file.write(comic_name + "," + comic_url + "," + comic_index + "-" + prev_index + "-" + next_index + "," + flags)

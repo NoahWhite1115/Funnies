@@ -62,9 +62,11 @@ class FunniesGUI(Frame):
         #generate comic objects
         index = 0
         for comic in self.comics:
-            new_gui = ComicGui(comic,self.canvas,self.parent,self,index)
-            self.comic_guis.append(new_gui)
-            index += 1
+            #Don't load if an error has occurred
+            if comic.error == False:
+                new_gui = ComicGui(comic,self.canvas,self.parent,self,index)
+                self.comic_guis.append(new_gui)
+                index += 1
 
         #refresh from 0 to load whole page
         self.refresh(0)
@@ -120,6 +122,18 @@ class ComicGui():
         self.prev_button.configure(width = 5, activebackground = "#33B5E5", relief = FLAT)
         self.prev_obj = self.parent_canvas.create_window(0, 0, anchor=N, window=self.prev_button)
 
+        #max button
+        if comic.max_link == True:
+            self.max_button = Button(self.parent, text = "Max", command = (lambda : self.load("max")))
+            self.max_button.configure(width = 5, activebackground = "#33B5E5", relief = FLAT)
+            self.max_obj = self.parent_canvas.create_window(0, 0, anchor=N, window=self.max_button)
+
+        #previous button
+        if comic.min_link == True:
+            self.min_button = Button(self.parent, text = "Min", command = (lambda : self.load("min")))
+            self.min_button.configure(width = 5, activebackground = "#33B5E5", relief = FLAT)
+            self.min_obj = self.parent_canvas.create_window(0, 0, anchor=N, window=self.min_button)
+
     #clear the gui
     def clear_gui(self):
         self.parent_canvas.delete(self.name_text)
@@ -170,6 +184,11 @@ class ComicGui():
         self.parent_canvas.coords(self.prev_obj,(center - prev_spacing,height+5))
         self.parent_canvas.coords(self.next_obj,(center + next_spacing ,height+5))
 
+        if self.comic.max_link == True:
+            self.parent_canvas.coords(self.max_obj,(center + prev_spacing + 80,height+5))
+        if self.comic.min_link == True:
+            self.parent_canvas.coords(self.min_obj,(center - next_spacing - 80,height+5))
+
         height += 45
         self.new_height = height
 
@@ -182,6 +201,11 @@ class ComicGui():
             self.comic.next()
         elif arg == "random":
             self.comic.random()
+        elif arg == "max":
+            self.comic.max()
+        elif arg == "min":
+            self.comic.min()
+
         self.comic.read()
         self.comic_image = Image.open("./Comics/" + self.comic.name + ".png")
         self.comic_image_obj = ImageTk.PhotoImage(self.comic_image)
