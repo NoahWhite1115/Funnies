@@ -250,7 +250,7 @@ class comic_obj():
     #loads min comic, if enabled
     def min(self):
         #check if valid
-        if not self.min_link:
+        if not self.min_link or self.url == self.min_index:
             print "Warning: min not enabled on " + self.name
             return
         if self.url == self.min_index:
