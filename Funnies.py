@@ -241,4 +241,6 @@ def main():
 if __name__ == '__main__':
     name_font = ("Verdana",22)
     title_font = ("Verdana",10)
+    config_path = None
+    comic_path = None
     main()

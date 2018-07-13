@@ -7,13 +7,14 @@ Supports the finding of and the loading of webcomics.
 
 import urllib
 import ComicParser
+import os
 
 #reads a config file, returns a lits of 3-tuples containing Name, url and formatting of comic
-def readConfig():
+def readConfig(path = "."):
 
     #read the config file. Throw an error if one is not found.
     try:
-        config_file = open("./.funconfig",'r')
+        config_file = open( os.path.join(path,".funconfig"), 'r')
     except:
         print "ERROR: No config file found. Please run ./setup first to initialize directory for first time use."
         exit()
@@ -35,9 +36,10 @@ def readConfig():
 class comic_obj():
 
     #initialize comic object
-    def __init__(self,name,url,info,flags):
+    def __init__(self,name,url,info,flags,path = os.path.join(".","Comics")):
         self.name = name
         self.url = url
+        self.path = path
 
         #quick info index list
             #0 is what image in parser the comic url is stored at
@@ -186,9 +188,9 @@ class comic_obj():
 
         #get url
         if self.lcl == True:            
-            urllib.urlretrieve("https:" + image_url, "./Comics/" + self.name + ".png")
+            urllib.urlretrieve("https:" + image_url, os.path.join(self.path, self.name + ".png"))
         else:
-            urllib.urlretrieve(image_url, "./Comics/" + self.name + ".png")
+            urllib.urlretrieve(image_url, os.path.join(self.path,self.name + ".png"))
 
         #get title text
         if self.title == True:
@@ -205,9 +207,9 @@ class comic_obj():
 
         #get url
         if self.lcl == True:            
-            urllib.urlretrieve("https:" + add_image_url, "./Comics/" + self.name + "_ai.png")
+            urllib.urlretrieve("https:" + add_image_url, os.path.join(self.path,self.name + "_ai.png"))
         else:
-            urllib.urlretrieve(add_image_url, "./Comics/" + self.name + "_ai.png")
+            urllib.urlretrieve(add_image_url, os.path.join(self.path,self.name + "_ai.png"))
 
     #load the next comic
     def next(self):
