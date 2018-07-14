@@ -30,8 +30,8 @@ class FunniesGUI(Frame):
 
         #Set up the file menu
         menubar = Menu(self.parent)
-        filemenu = Menu(menubar, tearoff=0, relief = FLAT)
-        #filemenu.add_command(label="Version", command = self.show_version)
+        filemenu = Menu(menubar, tearoff=0, relief = FLAT, activebackground = "#33B5E5")
+        filemenu.add_command(label="Version", command = self.show_version)
         filemenu.add_command(label="Exit", command = self.parent.quit)
         menubar.add_cascade(label="File", menu=filemenu)
         self.parent.config(menu=menubar)
@@ -56,7 +56,6 @@ class FunniesGUI(Frame):
         #Linux
         self.parent.bind("<Button-4>", self.mousewheel)
         self.parent.bind("<Button-5>", self.mousewheel)
-
 
     #handles scrolling
     def mousewheel(self, event):
@@ -91,6 +90,12 @@ class FunniesGUI(Frame):
             height = comic_gui.new_height
 
         self.canvas.config(scrollregion=(0,0,center*2,height+35))
+
+    #show Funnies version/author
+    def show_version(self):
+        window = Toplevel(self.parent)
+        version_info = Label(window,width = 30, height = 5, anchor = CENTER, text = "Funnies!\nVersion 1.1\nAuthored By Noah White\nLiscenced under GNU-GLP 2.0\nSee Liscence file for details")
+        version_info.pack()
 
 class ComicGui():
     def __init__(self,comic,canvas,parent,funnies,index):
