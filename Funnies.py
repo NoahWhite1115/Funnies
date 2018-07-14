@@ -3,7 +3,16 @@
 from Tkinter import *
 import ComicLib
 from PIL import Image,ImageTk
+from os.path import join
+from os import system
 
+#a bunch of configuration constants. Feel free to change to personalize. 
+#fonts used
+name_font = ("Verdana",22)
+title_font = ("Verdana",10)
+#paths used
+config_path = None
+comic_path = None
 
 class FunniesGUI(Frame):
     def __init__(self, master,comic_list):
@@ -21,7 +30,7 @@ class FunniesGUI(Frame):
 
         #Set up the file menu
         menubar = Menu(self.parent)
-        filemenu = Menu(menubar, tearoff=0)
+        filemenu = Menu(menubar, tearoff=0, relief = FLAT)
         #filemenu.add_command(label="Version", command = self.show_version)
         filemenu.add_command(label="Exit", command = self.parent.quit)
         menubar.add_cascade(label="File", menu=filemenu)
@@ -97,12 +106,12 @@ class ComicGui():
         self.drawn_add_image = None
 
         #load comic
-        self.comic_image = Image.open("./Comics/" + self.comic.name + ".png")
+        self.comic_image = Image.open( join(self.comic.path, self.comic.name + ".png"))
         self.comic_image_obj = ImageTk.PhotoImage(self.comic_image)
 
         if comic.add_image == True:
             #load comic
-            self.add_image = Image.open("./Comics/" + self.comic.name + "_ai.png")
+            self.add_image = Image.open( join(self.comic.path, self.comic.name + "_ai.png"))
             self.add_image_obj = ImageTk.PhotoImage(self.add_image)
 
         #initialize buttons
@@ -207,17 +216,29 @@ class ComicGui():
             self.comic.min()
 
         self.comic.read()
-        self.comic_image = Image.open("./Comics/" + self.comic.name + ".png")
+        self.comic_image = Image.open( join(self.comic.path, self.comic.name + ".png"))
         self.comic_image_obj = ImageTk.PhotoImage(self.comic_image)
 
         if self.comic.add_image == True:
-            self.add_image = Image.open("./Comics/" + self.comic.name + "_ai.png")
+            self.add_image = Image.open( join(self.comic.path, self.comic.name + "_ai.png"))
             self.add_image_obj = ImageTk.PhotoImage(self.add_image)
 
         #refresh the page so that the changes are loaded.
         self.funnies.refresh(self.index)
 
 def main():
+
+    #Create the new directory.
+    if comic_path != None:
+        try:
+            system("mkdir " + comic_path)
+        except:
+            pass
+    else:
+        try:
+            system("mkdir " + join(".","Comics") )
+        except:
+            pass
 
     #read/split config file as a list of 3-tuples (Name,URL,info_string).
     config_list = ComicLib.readConfig()
@@ -239,8 +260,5 @@ def main():
     top.mainloop()
 
 if __name__ == '__main__':
-    name_font = ("Verdana",22)
-    title_font = ("Verdana",10)
-    config_path = None
-    comic_path = None
+
     main()
