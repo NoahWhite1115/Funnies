@@ -1,3 +1,11 @@
+"""
+ComicParser 1.0
+Written by Noah White
+
+Designed to make it easier to get webcomics from the internet
+Primarily for use with Funnies
+"""
+
 import urllib
 from HTMLParser import HTMLParser
 

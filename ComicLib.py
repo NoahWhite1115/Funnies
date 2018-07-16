@@ -1,5 +1,5 @@
 """
-Comic library 0.1
+Comic library 1.0
 Written by Noah White
 
 Supports the finding of and the loading of webcomics.
@@ -205,11 +205,11 @@ class comic_obj():
                 if img[0] == 'src':
                     add_image_url = img[1]
 
-        #get url
-        if self.lcl == True:            
-            urllib.urlretrieve("https:" + add_image_url, join(self.path,self.name + "_ai.png"))
-        else:
-            urllib.urlretrieve(add_image_url, join(self.path,self.name + "_ai.png"))
+            #get url
+            if self.lcl == True:            
+                urllib.urlretrieve("https:" + add_image_url, join(self.path,self.name + "_ai.png"))
+            else:
+                urllib.urlretrieve(add_image_url, join(self.path,self.name + "_ai.png"))
 
     #load the next comic
     def next(self):

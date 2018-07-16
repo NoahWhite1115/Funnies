@@ -1,5 +1,9 @@
-#Funnies 0.10
-#Written by Noah White
+"""
+Funnies 1.1
+Written by Noah White
+
+Python webcomic browser
+"""
 from Tkinter import *
 import ComicLib
 from PIL import Image,ImageTk

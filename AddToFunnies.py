@@ -1,5 +1,7 @@
 import ComicParser
 import urllib
+from os.path import join
+
 
 def add_comic():
     
@@ -93,7 +95,7 @@ def add_comic():
         try:
             max_index = raw_input("Max: ")
             int(max_index)
-            flags += (rand_index + "-")
+            flags += (max_index + "-")
         except:
             print "Not an integer!"
             exit()
@@ -157,7 +159,7 @@ def add_comic():
         print "Did not understand that input. Please type y or n."
         exit()
 
-    config_file = open("./.funconfig",'a')
+    config_file = open(join(".",".funconfig"),'a')
     config_file.write(comic_name + "," + comic_url + "," + comic_index + "-" + prev_index + "-" + next_index + "," + flags)
     config_file.close()
 
