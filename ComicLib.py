@@ -3,20 +3,29 @@ Comic library 1.0
 Written by Noah White
 
 Supports the finding of and the loading of webcomics.
+
+Formatting follows PEP 8.0
+https://www.python.org/dev/peps/pep-0008/
 """
 
 import urllib
 import ComicParser
 from os.path import join
 
-#reads a config file, returns a lits of 3-tuples containing Name, url and formatting of comic
+
+"""
+readConfig(path)
+reads the config file
+takes an optional path variable to where the config file is
+returns a lits of 3-tuples containing Name, url and formatting of comic
+"""
 def readConfig(path = "."):
 
     #read the config file. Throw an error if one is not found.
     try:
         config_file = open( join(path,".funconfig"), 'r')
     except:
-        print "ERROR: No config file found. Please run ./setup first to initialize directory for first time use."
+        print "ERROR: No config file found. Please run ./setup first to initialize directory for first time use." #Too long   
         exit()
 
     #convert to 3-tuple
@@ -32,10 +41,28 @@ def readConfig(path = "."):
     return comic_info
 
 
-#comic object
+"""
+Comic object
+Designed to handle grabbing comics from the internet.
+Takes 5 arguements:
+    name: name of comic as string
+    url: url of comic as string
+    info: 3 integers describing comic, back and forward link indexes.
+        Passed as a string with '-' characters seperating the values.
+    flags: Optional flags, describing other things about the comic.
+        Passed as a string with '-' characters seperating the values.
+    path (optional): Path of where to save comics. '.' by default.
+
+Functions provided:
+    flag_parsing():
+        parses flags to set up the comic obj
+    load():
+        makes sure the url can be opened and sets max and min comics.
+    
+"""
 class comic_obj():
 
-    #initialize comic object
+    #initialization of the 
     def __init__(self,name,url,info,flags,path = join(".","Comics")):
         self.name = name
         self.url = url
