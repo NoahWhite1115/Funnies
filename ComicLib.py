@@ -127,11 +127,16 @@ class comic_obj():
         #If url provided in script isn't guarunteed to be the max url, then a link to the max comic must be provided.
         if "nm" in self.flags or "max" in self.flags:
             try:
-                nm_index = self.flags.index("nm") + 1
-                self.max_link_loc = int(self.flags[nm_index])
-                self.max_link = True
                 if "nm" in self.flags:
+                    max_index = self.flags.index("nm") + 1
                     self.max_link_needed = True
+
+                elif "max" in self.flags:
+                    max_index = self.flags.index("max") + 1
+                    self.max_link_needed = False
+
+                self.max_link_loc = int(self.flags[max_index])
+                self.max_link = True
             except:
                 print "WARNING: Invalid max link provided for " + self.name + " even though it was indicated one was needed. Errors may occur."
                 self.max_link = False
@@ -200,6 +205,17 @@ class comic_obj():
             except:
                 print "WARNING: Issue getting max index for " + self.name
 
+        if self.min_link == True:
+            original_url = self.url
+            self.min()
+            self.min_index = self.url
+            self.url = original_url
+
+            #get the page
+            self.page = urllib.urlopen(self.url).read()
+            self.parser.clear()
+            self.parser.feed(self.page)
+
     #downloads the current comic
     def read(self):
         #Do nothing if error in loading
@@ -263,7 +279,7 @@ class comic_obj():
             print "Warning: random not enabled on " + self.name
             return
 
-        self.get_comic(self.rand_loc,"https:")
+        self.get_comic(self.rand_loc,self.base_url)
 
     #loads max comic, if enabled
     def max(self):
@@ -274,7 +290,7 @@ class comic_obj():
         if self.url == self.max_index:
             print "Warning: already at max on " + self.name
             return
-        self.get_comic(self.max_link_loc,"https:")
+        self.get_comic(self.max_link_loc,self.base_url)
 
     #loads min comic, if enabled
     def min(self):
@@ -286,7 +302,7 @@ class comic_obj():
             print "Warning: already at min on " + self.name
             return
 
-        self.get_comic(self.min_link_loc,"https:")
+        self.get_comic(self.min_link_loc,self.base_url)
 
     #get the comic from the web
     def get_comic(self,loc,lcl_prefix):
@@ -298,11 +314,13 @@ class comic_obj():
         for link in self.parser.link_list[loc]:
             if link[0] == 'href':
                 if self.lcl == True:
-
+                    
                     self.url = lcl_prefix + link[1]
 
                 else:
                     self.url = link[1]
+        
+        print self.url
 
         #get the page
         self.page = urllib.urlopen(self.url).read()
