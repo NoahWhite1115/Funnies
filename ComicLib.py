@@ -6,6 +6,9 @@ Supports the finding of and the loading of webcomics.
 
 Formatting follows PEP 8.0
 https://www.python.org/dev/peps/pep-0008/
+
+Uses the GNU GPL 2.0 Lisence. 
+Check LISENCE for more info.
 """
 
 import urllib
@@ -95,7 +98,6 @@ class ComicObj():
     designed to parse the flags passed in __init__
     private
     """
-
     def flag_parsing(self):
         # Check if title text is wanted
         if "tt" in self.flags:
@@ -173,7 +175,13 @@ class ComicObj():
             self.lcl = False
             self.base_url = None
 
-    # Check comic url, get max and min indices
+    """
+    ComicObj.load()
+    takes: nothing
+    returns: an error code or None
+    Sets the min and max indexes for the ComicObj.
+    Private
+    """
     def load(self):
         # Check if the url even loads
         try:
@@ -206,6 +214,7 @@ class ComicObj():
             except:
                 print "WARNING: Issue getting max index for " + self.name
 
+        # If a min link is provided, get the min index
         if self.min_link:
             original_url = self.url
             self.min()
@@ -217,7 +226,13 @@ class ComicObj():
             self.parser.clear()
             self.parser.feed(self.page)
 
-    # Downloads the current comic
+    """
+    ComicObj.read()
+    takes: nothing
+    returns: nothing
+    Downloads the comic and any additional info needed.
+    Public
+    """
     def read(self):
         # Do nothing if error in loading
         if self.error:
@@ -264,7 +279,13 @@ class ComicObj():
                     join(self.path, self.name + "_ai.png")
                 )
 
-    # Load the next comic
+    """
+    ComicObj.next()
+    takes: nothing
+    returns: nothing
+    Loads the next comic
+    Public
+    """
     def next(self):
         # Check if valid
         if self.url == self.max_index:
@@ -273,7 +294,13 @@ class ComicObj():
 
         self.get_comic(self.next_loc, self.base_url)
 
-    # Load the previous comic
+    """
+    ComicObj.prev()
+    takes: nothing
+    returns: nothing
+    Loads the previous comic
+    Public
+    """
     def prev(self):
         # Check if valid
         if self.url == self.min_index:
@@ -282,7 +309,13 @@ class ComicObj():
 
         self.get_comic(self.prev_loc, self.base_url)
 
-    # Loads a random comic, if enabled
+    """
+    ComicObj.random()
+    takes: nothing
+    returns: nothing
+    Loads a random comic
+    Public
+    """
     def random(self):
         # Check if valid
         if not self.rand_link:
@@ -291,7 +324,13 @@ class ComicObj():
 
         self.get_comic(self.rand_loc, "https:")
 
-    # Loads max comic, if enabled
+    """
+    ComicObj.max()
+    takes: nothing
+    returns: nothing
+    Loads the max comic
+    Public
+    """
     def max(self):
         # Check if valid
         if not self.max_link:
@@ -302,6 +341,13 @@ class ComicObj():
             return
         self.get_comic(self.max_link_loc, self.base_url)
 
+    """
+    ComicObj.min()
+    takes: nothing
+    returns: nothing
+    Loads the first comic
+    Public
+    """
     # Loads min comic, if enabled
     def min(self):
         # Check if valid
@@ -314,6 +360,15 @@ class ComicObj():
 
         self.get_comic(self.min_link_loc, self.base_url)
 
+    """
+    ComicObj.get_comic()
+    takes: 
+        loc: the index of the link to load
+        lcl_prefix: the prefix to append if the link is local
+    returns: nothing
+    Adjusts the link to get the comic from the internet
+    Private
+    """
     # Get the comic from the web
     def get_comic(self, loc, lcl_prefix):
         # Do nothing if error has occurred
