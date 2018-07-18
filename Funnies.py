@@ -250,13 +250,13 @@ def main():
             pass
 
     #read/split config file as a list of 3-tuples (Name,URL,info_string).
-    config_list = ComicLib.readConfig()
+    config_list = ComicLib.read_config()
 
     #create a list holding all the comic objects
     comic_list = []
 
     for comic in config_list:
-        x = ComicLib.comic_obj(comic[0],comic[1],comic[2],comic[3])
+        x = ComicLib.ComicObj(comic[0],comic[1],comic[2],comic[3])
         comic_list.append(x)
         x.read()
 

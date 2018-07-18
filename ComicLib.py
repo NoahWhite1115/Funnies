@@ -7,7 +7,7 @@ Supports the finding of and the loading of webcomics.
 Formatting follows PEP 8.0
 https://www.python.org/dev/peps/pep-0008/
 
-Uses the GNU GPL 2.0 Lisence. 
+Uses the GNU GPL 2.0 Lisence.
 Check LISENCE for more info.
 """
 
@@ -146,8 +146,8 @@ class ComicObj():
                 self.max_link_loc = int(self.flags[max_index])
                 self.max_link = True
             except:
-                print "WARNING: Invalid max link provided for " + self.name +
-                " even though it was indicated one was needed."
+                print "WARNING: Invalid max link provided for " + self.name
+                + " even though it was indicated one was needed."
                 print "Errors may occur."
                 self.max_link = False
                 self.max_link_needed = False
@@ -362,7 +362,7 @@ class ComicObj():
 
     """
     ComicObj.get_comic()
-    takes: 
+    takes:
         loc: the index of the link to load
         lcl_prefix: the prefix to append if the link is local
     returns: nothing
