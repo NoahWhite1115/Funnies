@@ -217,7 +217,7 @@ class ComicGui():
             self.comic.prev()
         elif arg == "next":
             self.comic.next()
-        elif arg == "random":
+        elif arg == "rand":
             self.comic.random()
         elif arg == "max":
             self.comic.max()

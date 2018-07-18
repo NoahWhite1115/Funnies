@@ -279,7 +279,7 @@ class comic_obj():
             print "Warning: random not enabled on " + self.name
             return
 
-        self.get_comic(self.rand_loc,self.base_url)
+        self.get_comic(self.rand_loc,"https:")
 
     #loads max comic, if enabled
     def max(self):
@@ -309,7 +309,7 @@ class comic_obj():
         #do nothing if error has occurred
         if self.error == True:
             return
-        
+       
         #Check if link is global or local; adjust accordingly
         for link in self.parser.link_list[loc]:
             if link[0] == 'href':
@@ -319,9 +319,7 @@ class comic_obj():
 
                 else:
                     self.url = link[1]
-        
-        print self.url
-
+       
         #get the page
         self.page = urllib.urlopen(self.url).read()
         self.parser.clear()
