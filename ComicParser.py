@@ -15,6 +15,12 @@ Check LISENCE for more info.
 import urllib
 from HTMLParser import HTMLParser
 
+"""
+ComicParser
+Extends HTMLParser to better handle webcomics
+takes: nothing
+"""
+
 
 class ComicParser(HTMLParser):
     # Init adds in 2 lists to hold links and images.
@@ -23,7 +29,12 @@ class ComicParser(HTMLParser):
         self.link_list = []
         self.image_list = []
 
-    # Add things to link and image lists when feed is called
+    """
+    ComicParser.handle_starttag(tag,attrs)
+    Takes a tag and attributes list for the html passed to it
+    Handles html by storing images and links in lists
+    Private
+    """
     def handle_starttag(self, tag, attrs):
         # Get all images on a page
         if tag == "img":
@@ -43,7 +54,12 @@ class ComicParser(HTMLParser):
 
             self.link_list.append(link_attrs)
 
-    # Removes the previous lists so that new ones can be loaded.
+    """
+    ComicParser.clear()
+    takes: nothing
+    clears the lists stored by the object so that they
+    can be recreated based on new page content
+    """
     def clear(self):
         self.link_list = []
         self.image_list = []
