@@ -8,6 +8,7 @@ from ComicLib import ComicObj
 from ComicLib import read_config
 from ComicParser import ComicParser
 from urllib import urlopen
+import os
 
 """
 Test function for ComicParser from ComicParser.py
@@ -115,6 +116,10 @@ def ComicTest():
 
 
 if __name__ == "__main__":
+
+    if not os.path.exists(os.path.join(".", "Comics")):
+        os.makedirs(os.path.join(".", "Comics"))
+
     ParserTest()
     print "No issues with parser."
     ComicTest()

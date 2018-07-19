@@ -6,15 +6,18 @@ Python webcomic browser
 """
 from Tkinter import *
 import ComicLib
-from PIL import Image,ImageTk
+from PIL import Image, ImageTk
 from os.path import join
-from os import system
+from os.path import exists
+from os import makedirs
 
-#a bunch of configuration constants. Feel free to change to personalize. 
-#fonts used
+# A bunch of configuration constants. Feel free to change to personalize. 
+
+# Fonts used
 name_font = ("Verdana",22)
 title_font = ("Verdana",10)
-#paths used
+
+# Paths used
 config_path = None
 comic_path = None
 
@@ -239,20 +242,16 @@ def main():
 
     #Create the new directory.
     if comic_path != None:
-        try:
-            system("mkdir " + comic_path)
-        except:
-            pass
+        if not exists(join(comic_path, "Comics")):
+            makedirs(join(comic_path, "Comics"))
     else:
-        try:
-            system("mkdir " + join(".","Comics") )
-        except:
-            pass
-
-    #read/split config file as a list of 3-tuples (Name,URL,info_string).
+        if not exists(join(".", "Comics")):
+            makedirs(join(".", "Comics"))
+        
+    # Read/split config file as a list of 3-tuples (Name,URL,info_string).
     config_list = ComicLib.read_config()
 
-    #create a list holding all the comic objects
+    # Create a list holding all the comic objects
     comic_list = []
 
     for comic in config_list:
