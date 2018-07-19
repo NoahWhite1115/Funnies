@@ -5,7 +5,9 @@ Contains a set of functions that provide simple debugging cases.
 """
 
 from ComicLib import ComicObj
+from ComicLib import read_config
 from ComicParser import ComicParser
+from urllib import urlopen
 
 """
 Test function for ComicParser from ComicParser.py
@@ -15,14 +17,11 @@ A change on that website will break this test function
 
 
 def ParserTest():
-    xkcd = urllib.urlopen("http://xkcd.com/1").read()
+    xkcd = urlopen("http://xkcd.com/1").read()
 
     parser = ComicParser()
 
     parser.feed(xkcd)
-
-    for i in parser.link_list:
-        print i
 
     xkcd = parser.image_list[1][0][1]
     tt = parser.image_list[1][1][1]
@@ -64,18 +63,18 @@ def ParserTest():
 Test function for the ComicObj from ComicLib
 Before running test, save your current version of ./.funconfig
 as something else and replace it with the following line:
-xkcd,http://xkcd.com,1-7-9,tt-lcl-rand-8
+xkcd,https://xkcd.com,1-7-9,rand-8-max-10-min-6-lcl-tt-
 """
 
 
-def comicTest():
-    xkcdArgs = readConfig()[0]
+def ComicTest():
+    xkcdArgs = read_config()[0]
 
     if xkcdArgs[0] != 'xkcd':
         print "Name arg not properly set."
         exit()
 
-    if xkcdArgs[1] != 'http://xkcd.com':
+    if xkcdArgs[1] != 'https://xkcd.com':
         print "Url arg not properly set."
         exit()
 
@@ -83,14 +82,40 @@ def comicTest():
         print "Info arg not properly set."
         exit()
 
-    if xkcdArgs[3] != 'tt-lcl-rand-8':
+    if xkcdArgs[3] != 'rand-8-max-10-min-6-lcl-tt-':
         print "Flags arg not properly set."
+        exit()
 
-    xkcd = comic_obj(xkcdArgs[0], xkcdArgs[1], xkcdArgs[2], xkcdArgs[3])
+    print "No issue with config reader."
+
+    xkcd = ComicObj(xkcdArgs[0], xkcdArgs[1], xkcdArgs[2], xkcdArgs[3])
     xkcd.read()
+
+    print "No issue with comic loading."
+
+    xkcd.min()
+    xkcd.read()
+    print "No issues with Comic.min()."
+
+    xkcd.next()
+    xkcd.read()
+    print "No issues with Comic.next()."
 
     xkcd.prev()
     xkcd.read()
+    print "No issues with Comic.prev()."
+
+    xkcd.max()
+    xkcd.read()
+    print "No issues with Comic.max()."
+
     xkcd.random()
     xkcd.read()
-    print xkcd.title_text
+    print "No issues with Comic.random()."
+
+
+if __name__ == "__main__":
+    ParserTest()
+    print "No issues with parser."
+    ComicTest()
+    print "No issues with comic object."
