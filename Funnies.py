@@ -24,7 +24,7 @@ comic_path = None
 
 # Colors used
 canvas_bg = "White"
-abg = "#33B5E5"
+active_bg = "#33B5E5"
 
 # Scroll speed
 scroll_speed = 1
@@ -133,7 +133,11 @@ class FunniesGUI(Frame):
             width=30,
             height=5,
             anchor=CENTER,
-            text="Funnies!\nVersion 1.1\nAuthored By Noah White\nLiscenced under GNU-GLP 2.0\nSee Liscence file for details"
+            text="Funnies!\n"
+            + "Version 1.1\n"
+            + "Authored By Noah White\n"
+            + "Liscenced under GNU-GLP 2.0\n"
+            + "See Liscence file for details"
             )
         version_info.pack()
 
@@ -152,42 +156,112 @@ class ComicGui():
         self.drawn_add_image = None
 
         # Load comic
-        self.comic_image = Image.open(join(self.comic.path, self.comic.name + ".png"))
+        self.comic_image = Image.open(join(
+            self.comic.path,
+            self.comic.name + ".png"
+            ))
         self.comic_image_obj = ImageTk.PhotoImage(self.comic_image)
 
         if comic.add_image:
             # Load comic
-            self.add_image = Image.open(join(self.comic.path, self.comic.name + "_ai.png"))
+            self.add_image = Image.open(join(
+                self.comic.path,
+                self.comic.name + "_ai.png"
+                ))
             self.add_image_obj = ImageTk.PhotoImage(self.add_image)
 
         # Initialize buttons
         # Random button
         if comic.rand_link:
-            self.rand_button = Button(self.parent, text="Rand", command=(lambda: self.load("rand")))
-            self.rand_button.configure(width=5, activebackground="#33B5E5", relief=FLAT)
-            self.rand_obj = self.parent_canvas.create_window(0, 0, anchor=N, window=self.rand_button)
+            self.rand_button = Button(
+                    self.parent,
+                    text="Rand",
+                    command=(lambda: self.load("rand")))
+            self.rand_button.configure(
+                    width=5,
+                    activebackground=active_bg,
+                    relief=FLAT
+                    )
+            self.rand_obj = self.parent_canvas.create_window(
+                0,
+                0,
+                anchor=N,
+                window=self.rand_button
+                )
 
         # Next button
-        self.next_button = Button(self.parent, text="Next", command=(lambda: self.load("next")))
-        self.next_button.configure(width=5, activebackground="#33B5E5", relief=FLAT)
-        self.next_obj = self.parent_canvas.create_window(0, 0, anchor=N, window=self.next_button)
+        self.next_button = Button(
+                self.parent,
+                text="Next",
+                command=(lambda: self.load("next"))
+                )
+        self.next_button.configure(
+                width=5,
+                activebackground=active_bg,
+                relief=FLAT
+                )
+        self.next_obj = self.parent_canvas.create_window(
+            0,
+            0,
+            anchor=N,
+            window=self.next_button
+            )
 
         # Previous button
-        self.prev_button = Button(self.parent, text="Prev", command=(lambda: self.load("prev")))
-        self.prev_button.configure(width=5, activebackground="#33B5E5", relief=FLAT)
-        self.prev_obj = self.parent_canvas.create_window(0, 0, anchor=N, window=self.prev_button)
+        self.prev_button = Button(
+                self.parent,
+                text="Prev",
+                command=(lambda: self.load("prev"))
+                )
+        self.prev_button.configure(
+                width=5,
+                activebackground=active_bg,
+                relief=FLAT
+                )
+        self.prev_obj = self.parent_canvas.create_window(
+            0,
+            0,
+            anchor=N,
+            window=self.prev_button
+            )
 
         # Max button
         if comic.max_link:
-            self.max_button = Button(self.parent, text="Max", command=(lambda: self.load("max")))
-            self.max_button.configure(width=5, activebackground="#33B5E5", relief=FLAT)
-            self.max_obj = self.parent_canvas.create_window(0, 0, anchor=N, window=self.max_button)
+            self.max_button = Button(
+                self.parent,
+                text="Max",
+                command=(lambda: self.load("max"))
+                )
+            self.max_button.configure(
+                width=5,
+                activebackground=active_bg,
+                relief=FLAT
+                )
+            self.max_obj = self.parent_canvas.create_window(
+                0,
+                0,
+                anchor=N,
+                window=self.max_button
+                )
 
         # Min button
         if comic.min_link:
-            self.min_button = Button(self.parent, text="Min", command=(lambda: self.load("min")))
-            self.min_button.configure(width=5, activebackground="#33B5E5", relief=FLAT)
-            self.min_obj = self.parent_canvas.create_window(0, 0, anchor=N, window=self.min_button)
+            self.min_button = Button(
+                self.parent,
+                text="Min",
+                command=(lambda: self.load("min"))
+                )
+            self.min_button.configure(
+                width=5,
+                activebackground=active_bg,
+                relief=FLAT
+                )
+            self.min_obj = self.parent_canvas.create_window(
+                0,
+                0,
+                anchor=N,
+                window=self.min_button
+                )
 
     # Clear the gui
     def clear_gui(self):
@@ -200,11 +274,22 @@ class ComicGui():
     def draw_gui(self, height, center):
 
         # Space for comic name
-        self.name_text = self.parent_canvas.create_text(center, height, text=self.comic.name, font=name_font, anchor=N)
+        self.name_text = self.parent_canvas.create_text(
+            center,
+            height,
+            text=self.comic.name,
+            font=name_font,
+            anchor=N
+            )
         height += int(name_font[1] * 1.5)
 
         # Draw the new comic
-        self.drawn_image = self.parent_canvas.create_image(center, height, image=self.comic_image_obj, anchor=N)
+        self.drawn_image = self.parent_canvas.create_image(
+            center,
+            height,
+            image=self.comic_image_obj,
+            anchor=N
+            )
 
         # Get comic size and adjust for height
         (comic_width, comic_height) = self.comic_image.size
@@ -212,7 +297,12 @@ class ComicGui():
 
         # Load additional image
         if self.comic.add_image:
-            self.drawn_add_image = self.parent_canvas.create_image(center, height, image=self.add_image_obj, anchor=N)
+            self.drawn_add_image = self.parent_canvas.create_image(
+                center,
+                height,
+                image=self.add_image_obj,
+                anchor=N
+                )
 
             # Get additional image size and adjust for height
             (add_width, add_height) = self.add_image.size
@@ -230,6 +320,7 @@ class ComicGui():
                 width=center * 1.8,
                 justify=CENTER
                 )
+
             width_by_char = int(center*1.8/(title_font[1]/1.5))
             lines = int(len(self.comic.title_text) / width_by_char)
             if int(len(self.comic.title_text) % width_by_char) > 0:
@@ -245,19 +336,32 @@ class ComicGui():
             next_spacing = 80
             prev_spacing = 80
 
-        self.parent_canvas.coords(self.prev_obj, (center - prev_spacing, height+5))
-        self.parent_canvas.coords(self.next_obj, (center + next_spacing, height+5))
+        self.parent_canvas.coords(
+            self.prev_obj,
+            (center - prev_spacing, height+5)
+            )
+        self.parent_canvas.coords(
+            self.next_obj,
+            (center + next_spacing, height+5)
+            )
 
         if self.comic.max_link:
-            self.parent_canvas.coords(self.max_obj, (center + prev_spacing + 80, height+5))
+            self.parent_canvas.coords(
+                self.max_obj,
+                (center + prev_spacing + 80, height+5)
+                )
         if self.comic.min_link:
-            self.parent_canvas.coords(self.min_obj, (center - next_spacing - 80, height+5))
+            self.parent_canvas.coords(
+                self.min_obj,
+                (center - next_spacing - 80, height+5)
+                )
 
         height += 45
         self.new_height = height
 
     # The load function for the ComicGUI class
-    # get the previous, next or random comic and load it into memory from the file
+    # get the previous, next or random comic
+    # and load it into memory from the file
     def load(self, arg):
         if arg == "prev":
             self.comic.prev()
@@ -271,11 +375,17 @@ class ComicGui():
             self.comic.min()
 
         self.comic.read()
-        self.comic_image = Image.open(join(self.comic.path, self.comic.name + ".png"))
+        self.comic_image = Image.open(join(
+            self.comic.path,
+            self.comic.name + ".png"
+            ))
         self.comic_image_obj = ImageTk.PhotoImage(self.comic_image)
 
         if self.comic.add_image:
-            self.add_image = Image.open(join(self.comic.path, self.comic.name + "_ai.png"))
+            self.add_image = Image.open(join(
+                self.comic.path,
+                self.comic.name + "_ai.png"
+                ))
             self.add_image_obj = ImageTk.PhotoImage(self.add_image)
 
         # Refresh the page so that the changes are loaded.
@@ -304,7 +414,10 @@ def main():
         x.read()
 
     top = Tk()
-    top.geometry("{0}x{1}".format(top.winfo_screenwidth(), top.winfo_screenheight()))
+    top.geometry("{0}x{1}".format(
+        top.winfo_screenwidth(),
+        top.winfo_screenheight()
+        ))
     top.update()
 
     Funnies = FunniesGUI(top, comic_list)
