@@ -3,6 +3,12 @@ Funnies 1.1
 Written by Noah White
 
 Python webcomic browser
+
+Formatting follows PEP 8.0
+https://www.python.org/dev/peps/pep-0008/
+
+Uses the GNU GPL 2.0 Lisence.
+Check LISENCE for more info.
 """
 from Tkinter import *
 import ComicLib
@@ -29,6 +35,14 @@ active_bg = "#33B5E5"
 # Scroll speed
 scroll_speed = 1
 
+"""
+FunniesGUI(master,comic_list)
+Takes:
+    master: the tk frame it belongs to
+    comic_list: a list of comic objects, to dislay
+This object serves as the wrapper that holds all the indivual comicGUIs
+"""
+
 
 class FunniesGUI(Frame):
     def __init__(self, master, comic_list):
@@ -40,7 +54,12 @@ class FunniesGUI(Frame):
         self.widgets()
         self.set_up()
 
-    # Set up the main interface
+    """
+    FunniesGUI.widgets()
+    takes: none
+    Sets up the main interface
+    Private
+    """
     def widgets(self):
         self.parent.title("Funnies: Python Webcomic Browser")
 
@@ -85,14 +104,25 @@ class FunniesGUI(Frame):
         self.parent.bind("<Button-4>", self.mousewheel)
         self.parent.bind("<Button-5>", self.mousewheel)
 
-    # Handles scrolling
+    """
+    FunniesGUI.mousewheel(event)
+    takes: 
+        event: a mouse scroll event
+    Handles scrolling
+    Private
+    """
     def mousewheel(self, event):
         if event.num == 5 or event.delta == -120:
             self.canvas.yview_scroll(scroll_speed, "units")
         elif event.num == 4 or event.delta == 120:
             self.canvas.yview_scroll(scroll_speed, "units")
 
-    # Set up the comic_gui objects
+    """
+    FunniesGUI.set_up()
+    takes: none
+    Sets up the ComicGui objects
+    Private
+    """
     def set_up(self):
 
         # Generate comic objects
@@ -112,8 +142,13 @@ class FunniesGUI(Frame):
 
         # Refresh from 0 to load whole page
         self.refresh(0)
-
-    # Redraw all the page elements
+    """
+    FunniesGUI.refresh(index)
+    takes:
+        index: the index to begin at
+    Redraws all the page elements at and below index
+    Public
+    """
     def refresh(self, index):
         height = 0
         center = self.parent.winfo_screenwidth() / 2
@@ -125,7 +160,12 @@ class FunniesGUI(Frame):
 
         self.canvas.config(scrollregion=(0, 0, center*2, height+35))
 
-    # Show Funnies version/author
+    """
+    FunniesGUI.show_version()
+    takes: none
+    Displays Funnies version/author information
+    Private
+    """
     def show_version(self):
         window = Toplevel(self.parent)
         version_info = Label(
@@ -140,6 +180,17 @@ class FunniesGUI(Frame):
             + "See Liscence file for details"
             )
         version_info.pack()
+
+"""
+ComicGUI(comic,canvas,parent,funnies,index)
+takes:
+    comic: the comic object that this will be interacting with
+    canvas: The canvas element in FunniesGUI
+    parent: the tk instance hosting all of this
+    funnies: the FunniesGUI object managing this
+    index: where this falls on the page
+Displays a comic and the buttons needed to interact with it
+"""
 
 
 class ComicGui():
@@ -263,13 +314,26 @@ class ComicGui():
                 window=self.min_button
                 )
 
-    # Clear the gui
+    """
+    ComicGUI.clear_gui()
+    takes: none
+    Clears the GUI for the user 
+    Public
+    """
     def clear_gui(self):
         self.parent_canvas.delete(self.name_text)
         self.parent_canvas.delete(self.drawn_image)
         self.parent_canvas.delete(self.title_text)
         self.parent_canvas.delete(self.drawn_add_image)
 
+    """
+    ComicGUI.draw_gui(height,center)
+    Takes:
+        height: the starting height for where to draw the comic
+        center: the center line to draw around
+    Draws the comic and buttons
+    Public
+    """
     # Draw the gui
     def draw_gui(self, height, center):
 
@@ -359,6 +423,14 @@ class ComicGui():
         height += 45
         self.new_height = height
 
+    """
+        ComicGUI.load(arg)
+        takes:
+            arg: what this function should do to the comic object
+        Performs an action on the comic object
+        Then loads from the file into memory.
+        Public
+    """
     # The load function for the ComicGUI class
     # get the previous, next or random comic
     # and load it into memory from the file
@@ -390,6 +462,13 @@ class ComicGui():
 
         # Refresh the page so that the changes are loaded.
         self.funnies.refresh(self.index)
+
+"""
+The main application.
+Launches funnies by making the comic directory,
+reading the config file,
+and then creating the window.
+"""
 
 
 def main():
