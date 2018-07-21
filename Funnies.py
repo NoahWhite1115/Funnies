@@ -106,7 +106,7 @@ class FunniesGUI(Frame):
 
     """
     FunniesGUI.mousewheel(event)
-    takes: 
+    takes:
         event: a mouse scroll event
     Handles scrolling
     Private
@@ -180,6 +180,7 @@ class FunniesGUI(Frame):
             + "See Liscence file for details"
             )
         version_info.pack()
+
 
 """
 ComicGUI(comic,canvas,parent,funnies,index)
@@ -317,7 +318,7 @@ class ComicGui():
     """
     ComicGUI.clear_gui()
     takes: none
-    Clears the GUI for the user 
+    Clears the GUI for the user
     Public
     """
     def clear_gui(self):
@@ -462,6 +463,7 @@ class ComicGui():
 
         # Refresh the page so that the changes are loaded.
         self.funnies.refresh(self.index)
+
 
 """
 The main application.
