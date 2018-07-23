@@ -115,7 +115,7 @@ class FunniesGUI(Frame):
         if event.num == 5 or event.delta == -120:
             self.canvas.yview_scroll(scroll_speed, "units")
         elif event.num == 4 or event.delta == 120:
-            self.canvas.yview_scroll(scroll_speed, "units")
+            self.canvas.yview_scroll(-scroll_speed, "units")
 
     """
     FunniesGUI.set_up()
