@@ -17,6 +17,7 @@ Run
 
 This will generate the executable ./funnies on Linux and funnies.exe in Windows. If you want funnies as a global command on Linux, place this in the /bin directory.
 
+You may have to run chmod on the linux script to allow it to properly run. 
 
 Adding Comics
 -------------------------------------------------------------------------------
