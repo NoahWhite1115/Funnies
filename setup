@@ -1,1 +1,2 @@
-python ./setup.py
+python2 ./src/Setup.py
+chmod 755 ./funnies

@@ -19,14 +19,14 @@ from os.path import join
 """
 readConfig(path)
 reads the config file
-takes an optional path variable to where the config file is
+takes an optional path variable to where the config file is (.funconfig)
 returns a lits of 3-tuples containing Name, url and formatting of comic
 """
 
 
 def read_config(path="."):
 
-    # Read the config file. Throw an error if one is not found.
+    # Read the config file at .funconfig. Throw an error if one is not found.
     try:
         config_file = open(join(path, ".funconfig"), 'r')
     except:

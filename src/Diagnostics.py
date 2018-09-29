@@ -69,7 +69,7 @@ xkcd,https://xkcd.com,1-7-9,rand-8-max-10-min-6-lcl-tt-
 
 
 def ComicTest():
-    xkcdArgs = read_config()[0]
+    xkcdArgs = read_config("..")[0]
 
     if xkcdArgs[0] != 'xkcd':
         print "Name arg not properly set."
